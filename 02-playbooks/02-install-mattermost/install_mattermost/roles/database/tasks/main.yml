@@ -16,6 +16,7 @@
   become: yes
   become_user: postgres
   postgresql_user:
+    encrypted: yes
     db: mattermost
     name: "{{ db_user }}"
     password: "{{ db_password }}"
