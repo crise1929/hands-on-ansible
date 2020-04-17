@@ -1,6 +1,5 @@
 ---
 - name: SYSTEM | Install basic database packages
-  become: yes
   package: name={{ item }} state=present
   with_items:
     - postgresql
@@ -8,10 +7,7 @@
     - python-psycopg2
 
 - name: POSTGRES | Create mattermost database
-<<<<<<< HEAD
-=======
   become: yes
->>>>>>> dbc152c72240c8c96d82dffe6d1a3b284d911fb1
   become_user: postgres
   postgresql_db:
     name: mattermost
