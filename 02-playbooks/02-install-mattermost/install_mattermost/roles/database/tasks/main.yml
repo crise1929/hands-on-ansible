@@ -7,7 +7,6 @@
     - python-psycopg2
 
 - name: POSTGRES | Create mattermost database
-  become: true
   become_user: postgres
   postgresql_db:
     name: mattermost
@@ -24,7 +23,7 @@
 - name: POSTGRES | Shore up DB privileges for our application user
   become: yes
   become_user: postgres
-  postgresql_user: 
+  postgresql_user:
     name: "{{ db_user }}"
     role_attr_flags: NOSUPERUSER,NOCREATEDB
 
