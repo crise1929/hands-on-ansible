@@ -1,5 +1,5 @@
 ---
-# Run with ansible-playbook <filename> -k
+# Run with ansible-playbook <filename> -k -K
 #   (make sure to add the IPs of machines you want to manage to /etc/ansible/hosts first)
 
 - hosts: all
@@ -9,18 +9,37 @@
   become_user: root
   become_method: sudo
 
+  vars_prompt:
+    - name: ubuntu_pass
+      prompt: "ubuntu NEW password"
+      private: yes
+
+    - name: root_pass
+      prompt: "root NEW password"
+      private: yes
+
   tasks:
     - name: Update Packages
       raw: (apt-get update && apt-get -y upgrade)
 
     - name: Install Python 2
-      raw: test -e /usr/bin/python || (apt-get update && apt-get install -y python)
+      raw: test -e /usr/bin/python || apt-get install -y python-minimal python-setuptools --no-install-recommends
 
     - name: Fancy way of doing authorized_keys
-      authorized_key: user=root
+      authorized_key: user=ubuntu
                       exclusive=no
                       key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-    
+
+    - name: Change root's password
+      user:
+        name: root
+        password: "{{ root_pass | password_hash('sha512') }}"
+
+    - name: Change ubuntu's password
+      user:
+        name: ubuntu
+        password: "{{ ubuntu_pass | password_hash('sha512') }}"
+
     - name: COMMON | Set environment
       blockinfile:
         dest: /etc/environment
@@ -28,7 +47,7 @@
           LC_ALL=en_US.UTF-8
           LANG=en_US.UTF-8
       register: newenv
-    
+
     - block:
       - name: COMMON | Generate locales
         raw: locale-gen en_US.UTF-8
@@ -43,4 +62,3 @@
 
     #- name: Create /root/.ssh/authorized_keys from our local ssh pubkey
     #  lineinfile: dest=/root/.ssh/authorized_keys line="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-
