@@ -34,8 +34,8 @@ PG_VERSION: "9.3"
 PG_HBA_CONF: /etc/postgresql/{{ PG_VERSION }}/main/pg_hba.conf
 PG_CONF: /etc/postgresql/{{ PG_VERSION }}/main/postgresql.conf
 
-db_user: jo
-db_password: "auxpieds"
+db_user: mmuser
+db_password: "your_mattermost_user_password"
 
 
 ####################################################
