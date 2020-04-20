@@ -30,7 +30,7 @@ db_server: "{{ hostvars[groups['dbservers'][0]]['ansible_default_ipv4']['address
 # Database
 ####################################################
 # Postgres Version
-PG_VERSION: "9.3"
+PG_VERSION: "10"
 PG_HBA_CONF: /etc/postgresql/{{ PG_VERSION }}/main/pg_hba.conf
 PG_CONF: /etc/postgresql/{{ PG_VERSION }}/main/postgresql.conf
 
