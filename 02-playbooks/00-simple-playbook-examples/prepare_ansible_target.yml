@@ -1,5 +1,5 @@
 ---
-# Run with ansible-playbook <filename> -k -K
+# Run with ansible-playbook <filename> -k -K patate
 #   (make sure to add the IPs of machines you want to manage to /etc/ansible/hosts first)
 
 - hosts: all
